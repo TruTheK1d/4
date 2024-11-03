@@ -32,7 +32,7 @@ function displayProducts(categoryId) {
   selectedCategoryTitle.innerText = selectedCategory.name;
 
   const filteredProducts = products.filter(
-    (product) => product.categories.includes(categoryId) && product.discontinued
+    (product) => product.categories.includes(categoryId) && !product.discontinued
   );
   filteredProducts.forEach((product) => {
     const tr = document.createElement("tr");
