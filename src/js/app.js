@@ -19,6 +19,7 @@ const { products, categories } = window;
 
 // For debugging, display all of our data in the console
 console.log({ products, categories }, "Store Data");
+
 function formatCurrency(cents) {
   return new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD" }).format(cents / 100);
 }
@@ -34,6 +35,10 @@ function displayProducts(categoryId) {
   const filteredProducts = products.filter(
     (product) => product.categories.includes(categoryId) && !product.discontinued
   );
+
+  // Log the filtered products for debugging
+  console.log("Filtered Products:", filteredProducts);
+
   filteredProducts.forEach((product) => {
     const tr = document.createElement("tr");
     tr.addEventListener("click", () => {
