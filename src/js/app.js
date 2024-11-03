@@ -1,3 +1,20 @@
+/**
+ * WEB222 – Assignment 04
+ *
+ * I declare that this assignment is my own work in accordance with
+ * Seneca Academic Policy. No part of this assignment has been
+ * copied manually or electronically from any other source
+ * (including web sites) or distributed to other students.
+ *
+ * Please update the following with your information:
+ *
+ *      Name:       Turmunkh Davaajargal
+ *      Student ID: 164138232
+ *      Date:       11/02/2024
+ */
+
+// All of our data is available on the global `window` object.
+// Create local variables to work with it in this file.
 const { products, categories } = window;
 
 // Log the products and categories data
@@ -22,7 +39,7 @@ function displayProducts(categoryId) {
 
     // Filter products based on category and discontinued status
     const filteredProducts = products.filter(product => 
-        product.categories.includes(categoryId) && !product.discontinued
+        product.categories.includes(categoryId) && product.discontinued
     );
 
     // Loop through filtered products and create table rows
