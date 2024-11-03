@@ -14,4 +14,3 @@ window.categories = [
   { id: "c3", name: "Monitor" },
   { id: "c4", name: "Ram" }
 ];
-  

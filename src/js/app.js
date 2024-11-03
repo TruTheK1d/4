@@ -20,57 +20,53 @@ const { products, categories } = window;
 // For debugging, display all of our data in the console
 console.log({ products, categories }, "Store Data");
 function formatCurrency(cents) {
-    return new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(cents / 100);
+  return new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD" }).format(cents / 100);
 }
 
 function displayProducts(categoryId) {
-    const tbody = document.querySelector('#category-products');
-    const selectedCategoryTitle = document.querySelector('#selected-category');
-    
-    tbody.innerHTML = '';
-    const selectedCategory = categories.find(category => category.id === categoryId);
-    selectedCategoryTitle.innerText = selectedCategory.name;
+  const tbody = document.querySelector("#category-products");
+  const selectedCategoryTitle = document.querySelector("#selected-category");
 
-    const filteredProducts = products.filter(product => 
-        product.categories.includes(categoryId) && product.discontinued
-    );
-    filteredProducts.forEach(product => {
-        const tr = document.createElement('tr');
-        tr.addEventListener('click', () => {
-            console.log(product);
-        });
+  tbody.innerHTML = "";
+  const selectedCategory = categories.find((category) => category.id === categoryId);
+  selectedCategoryTitle.innerText = selectedCategory.name;
 
-        const titleTd = document.createElement('td');
-        titleTd.innerText = product.title;
-
-        const descriptionTd = document.createElement('td');
-        descriptionTd.innerText = product.description;
-
-        const priceTd = document.createElement('td');
-        priceTd.innerText = formatCurrency(product.price);
-        tr.appendChild(titleTd);
-        tr.appendChild(descriptionTd);
-        tr.appendChild(priceTd);
-        tbody.appendChild(tr);
+  const filteredProducts = products.filter(
+    (product) => product.categories.includes(categoryId) && product.discontinued
+  );
+  filteredProducts.forEach((product) => {
+    const tr = document.createElement("tr");
+    tr.addEventListener("click", () => {
+      console.log(product);
     });
+
+    const titleTd = document.createElement("td");
+    titleTd.innerText = product.title;
+
+    const descriptionTd = document.createElement("td");
+    descriptionTd.innerText = product.description;
+
+    const priceTd = document.createElement("td");
+    priceTd.innerText = formatCurrency(product.price);
+    tr.appendChild(titleTd);
+    tr.appendChild(descriptionTd);
+    tr.appendChild(priceTd);
+    tbody.appendChild(tr);
+  });
 }
 
 function init() {
-    const menu = document.querySelector('#menu');
-    categories.forEach(category => {
-        const button = document.createElement('button');
-        button.innerText = category.name;
-        button.addEventListener('click', () => displayProducts(category.id));
-        menu.appendChild(button);
-    });
+  const menu = document.querySelector("#menu");
+  categories.forEach((category) => {
+    const button = document.createElement("button");
+    button.innerText = category.name;
+    button.addEventListener("click", () => displayProducts(category.id));
+    menu.appendChild(button);
+  });
 
-    if (categories.length > 0) {
-        displayProducts(categories[0].id);
-    }
+  if (categories.length > 0) {
+    displayProducts(categories[0].id);
+  }
 }
 
-window.addEventListener('load', init);
-
-
-
-
+window.addEventListener("load", init);
