@@ -1,67 +1,76 @@
 const { products, categories } = window;
-window.onload = function () {
-  var menuElement = document.getElementById("menu");
-  var categories = window.categories;
-  for (let i = 0; i < categories.length; i++) {
-    var menuButton = document.createElement("button");
-    menuButton.setAttribute("id", categories[i].id);
-    menuButton.setAttribute("class", "btn");
-    menuButton.type = "button";
-    menuButton.innerHTML = categories[i].name;
-    menuElement.appendChild(menuButton);
-  }
-  var defaultTable = window.categories[0];
-  display(defaultTable);
-  const buttons = document.querySelectorAll(".btn");
-  buttons.forEach((node, index) => {
-    node.addEventListener("click", function () {
-      display(categories[index]);
-    });
-  });
 
-  const tableRows = document.querySelectorAll("tr");
-  tableRows.forEach((node) => {
-    node.addEventListener("click", function () {
-      console.log(this);
-    });
-  });
-};
-function display(catObj) {
-  var tableHeading = document.getElementById("selected-category");
-  var heading = document.createTextNode("Genre: " + catObj.name);
-  tableHeading.setAttribute("class", "heading");
-  tableHeading.innerHTML = "";
-  tableHeading.appendChild(heading);
-  var tableBody = document.getElementById("category-products");
-  var rows = document.getElementById("category-products").rows;
-  for (let i = 0; i < rows.length; i++) {
-    rows[i].innerHTML = " ";
-  }
-  var arrProducts = window.products;
-  var filteredArray = [];
-  filteredArray = arrProducts.filter((products) => {
-    return products.categories.includes(catObj.id) && products.discontinued === false;
-  });
-  filteredArray.forEach(function displayArr(arrPassed) {
-    var tableRow = document.createElement("tr");
-    var TitleData = document.createElement("td");
-    var Descdata = document.createElement("td");
-    var PriceData = document.createElement("td");
+// Log the products and categories data
+console.log({ products, categories }, "Store Data");
 
-    var Title = document.createTextNode(arrPassed.title);
-    var Description = document.createTextNode(arrPassed.description);
-    var Price = document.createTextNode(
-      new Intl.NumberFormat("je-JY", { style: "currency", currency: "CAD" }).format(arrPassed.price)
+// Function to format price in Canadian currency
+function formatCurrency(cents) {
+    return new Intl.NumberFormat('en-CA', { style: 'currency', currency: 'CAD' }).format(cents / 100);
+}
+
+// Function to display products based on the selected category
+function displayProducts(categoryId) {
+    const tbody = document.querySelector('#category-products');
+    const selectedCategoryTitle = document.querySelector('#selected-category');
+    
+    // Clear current rows
+    tbody.innerHTML = '';
+    
+    // Update selected category title
+    const selectedCategory = categories.find(category => category.id === categoryId);
+    selectedCategoryTitle.innerText = selectedCategory.name;
+
+    // Filter products based on category and discontinued status
+    const filteredProducts = products.filter(product => 
+        product.categories.includes(categoryId) && !product.discontinued
     );
 
-    TitleData.appendChild(Title);
-    Descdata.appendChild(Description);
-    PriceData.appendChild(Price);
-    tableRow.append(TitleData, Descdata, PriceData);
-    tableBody.appendChild(tableRow);
-  });
+    // Loop through filtered products and create table rows
+    filteredProducts.forEach(product => {
+        const tr = document.createElement('tr');
+        tr.addEventListener('click', () => {
+            console.log(product);
+        });
+
+        const titleTd = document.createElement('td');
+        titleTd.innerText = product.title;
+
+        const descriptionTd = document.createElement('td');
+        descriptionTd.innerText = product.description;
+
+        const priceTd = document.createElement('td');
+        priceTd.innerText = formatCurrency(product.price);
+
+        // Append td elements to tr
+        tr.appendChild(titleTd);
+        tr.appendChild(descriptionTd);
+        tr.appendChild(priceTd);
+        
+        // Append tr to tbody
+        tbody.appendChild(tr);
+    });
 }
-// For debugging, display all of our data in the console
-console.log({ products, categories }, "Store Data");
+
+// Event handler for page load
+function init() {
+    // Create category buttons
+    const menu = document.querySelector('#menu');
+    categories.forEach(category => {
+        const button = document.createElement('button');
+        button.innerText = category.name;
+        button.addEventListener('click', () => displayProducts(category.id));
+        menu.appendChild(button);
+    });
+
+    // Display products for the first category by default
+    if (categories.length > 0) {
+        displayProducts(categories[0].id);
+    }
+}
+
+// Run init function when the page loads
+window.addEventListener('load', init);
+
+
 
 
