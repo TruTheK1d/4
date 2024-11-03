@@ -1,6 +1,3 @@
-// For debugging, display all of our data in the console
-console.log({ products, categories }, "Store Data");
-
 const { products, categories } = window;
 window.onload = function () {
   var menuElement = document.getElementById("menu");
